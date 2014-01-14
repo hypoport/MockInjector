@@ -1,0 +1,62 @@
+/**
+ * Copyright 2012 HYPOPORT AG
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+package org.hypoport.mockito.injection;
+
+import javax.annotation.Resource;
+import javax.inject.Inject;
+import javax.inject.Provider;
+
+public class MyClass {
+
+  @Inject
+  Object injected;
+
+  @Inject
+  Object autowired;
+
+  @Resource(name = "namedResource")
+  Object resource;
+
+  Object notInjected;
+
+  @Inject
+  Provider<Injected> injectedProvider;
+
+  @Inject
+  private Object privateField;
+
+  Object setterInjectedField;
+
+  Object setterWithoutInject;
+
+  Object setter1InjectedField;
+  Object setter2InjectedField;
+
+  @Inject
+  private void setSetterInjectedField(Object setterInjectedField) {
+    this.setterInjectedField = setterInjectedField;
+  }
+
+  @Inject
+  private void setSetterInjectedFields(Object setter1InjectedField, Object setter2InjectedField) {
+    this.setter1InjectedField = setter1InjectedField;
+    this.setter2InjectedField = setter2InjectedField;
+  }
+
+  private void setSetterWithoutInject(Object setterWithoutInject) {
+    this.setterWithoutInject = setterWithoutInject;
+  }
+}
