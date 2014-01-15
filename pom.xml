@@ -23,24 +23,7 @@
 
   <groupId>org.hypoport.testutils</groupId>
   <artifactId>mockito-testutils</artifactId>
-  <version>1.5-SNAPSHOT</version>
-
-  <scm>
-    <connection>scm:git:ssh://hypoport@gitrepo.hypoport.local/gitdata/hypoport/testutils.git</connection>
-    <developerConnection>scm:git:ssh://hypoport@gitrepo.hypoport.local/gitdata/hypoport/testutils.git</developerConnection>
-    <tag>HEAD</tag>
-  </scm>
-
-  <distributionManagement>
-    <snapshotRepository>
-      <id>hypoport-shared-snapshots</id>
-      <url>http://nexus-beta.hypoport.local/nexus/content/repositories/hypoport-shared-snapshots</url>
-    </snapshotRepository>
-    <repository>
-      <id>hypoport-shared-releases</id>
-      <url>http://nexus-beta.hypoport.local/nexus/content/repositories/hypoport-shared-releases</url>
-    </repository>
-  </distributionManagement>
+  <version>1.7-SNAPSHOT</version>
 
   <build>
     <plugins>
