@@ -96,4 +96,16 @@ public class MockInjectorTest {
     Assertions.assertThat(mockUtil.isMock(object.toBeInjected1)).isTrue();
     Assertions.assertThat(mockUtil.isMock(object.toBeInjected2)).isTrue();
   }
+
+  @Test
+  public void mockProvider_mocks_a_Provider_for_a_class_with_generic_type() {
+    ClassWithProvider object = new ClassWithProvider();
+
+    MockInjector.injectMocks(object);
+
+    MockUtil mockUtil = new MockUtil();
+    Assertions.assertThat(mockUtil.isMock(object.classProvider)).isTrue();
+    Assertions.assertThat(mockUtil.isMock(object.classProvider.get())).isTrue();
+    Assertions.assertThat(object.classProvider.get()).isInstanceOf(ClassWithProvider.SubClass.class);
+  }
 }
