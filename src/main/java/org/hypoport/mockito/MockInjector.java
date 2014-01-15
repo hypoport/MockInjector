@@ -16,6 +16,7 @@
 package org.hypoport.mockito;
 
 import org.mockito.internal.util.MockCreationValidator;
+import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import javax.inject.Provider;
 import java.lang.annotation.Annotation;
@@ -198,7 +199,10 @@ public class MockInjector {
   }
 
   private static MockProvider mockProvider(Type fieldGenericType) {
-    ParameterizedType providerType = (ParameterizedType) fieldGenericType;
-    return spy(MockProvider.mockProvider((Class) providerType.getActualTypeArguments()[0]));
+    Type providedType = ((ParameterizedType) fieldGenericType).getActualTypeArguments()[0];
+    if(providedType instanceof ParameterizedType) {
+      providedType = ((ParameterizedType) providedType).getRawType();
+    }
+    return spy(MockProvider.mockProvider((Class) providedType));
   }
 }
