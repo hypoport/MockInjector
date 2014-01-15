@@ -23,7 +23,7 @@
 
   <groupId>org.hypoport.testutils</groupId>
   <artifactId>mockito-testutils</artifactId>
-  <version>1.6</version>
+  <version>1.7-SNAPSHOT</version>
 
   <build>
     <plugins>
