@@ -16,7 +16,6 @@
 package org.hypoport.mockito;
 
 import org.mockito.internal.util.MockCreationValidator;
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import javax.inject.Provider;
 import java.lang.annotation.Annotation;
@@ -46,10 +45,10 @@ public class MockInjector {
   /**
    * injects all injection annotated fields with mocks no constructor injection possible ;-)
    *
-   * @param object
+   * @param object to be filled with mocks
    * @param <T>
    *
-   * @return
+   * @return the mock object from the argument
    */
   public static <T> T injectMocks(T object) {
     try {
@@ -67,10 +66,10 @@ public class MockInjector {
   /**
    * creates an instance of the given class and injects all injection annotated fields with mocks
    *
-   * @param object
+   * @param class to be instantiated and filled with mocks
    * @param <T>
    *
-   * @return
+   * @return the instantiated object
    */
   public static <T> T injectMocks(Class<T> clazz) {
     try {
@@ -200,7 +199,7 @@ public class MockInjector {
 
   private static MockProvider mockProvider(Type fieldGenericType) {
     Type providedType = ((ParameterizedType) fieldGenericType).getActualTypeArguments()[0];
-    if(providedType instanceof ParameterizedType) {
+    if (providedType instanceof ParameterizedType) {
       providedType = ((ParameterizedType) providedType).getRawType();
     }
     return spy(MockProvider.mockProvider((Class) providedType));
