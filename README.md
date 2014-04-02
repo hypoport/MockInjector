@@ -37,12 +37,13 @@ Release
 
 MockInjector is available on maven central:
 
+```xml
 <dependency>
     <groupId>org.hypoport</groupId>
     <artifactId>mockito-mockinjector</artifactId>
     <version>1.0</version>
 </dependency>
-
+```
 
 
 Provider
