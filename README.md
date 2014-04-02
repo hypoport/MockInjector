@@ -32,6 +32,19 @@ Bugs
 ----
 There might be bugs. If you find one feel free to report it or even better fix it.
 
+Release
+-------
+
+MockInjector is available on maven central:
+
+<dependency>
+    <groupId>org.hypoport</groupId>
+    <artifactId>mockito-mockinjector</artifactId>
+    <version>1.0</version>
+</dependency>
+
+
+
 Provider
 --------
 Provider injection is somewhat work in progress
