@@ -20,6 +20,8 @@ For an more complete example see `example/src/test/java/org/hypoport/mockito/exa
 You can configure your own annotations using MockInjectorConfigurator.setInjectAnnotations() before the first call to
 injectMocks().
 
+You can find a more detailed introduction on http://blog-it.hypoport.de/2014/01/15/use-mockinjector-and-package-protected-scope-for-dependencies-to-reduce-boilerplate-code/
+
 Limitations
 -----------
 Since you do not create your mocks by hand you need some way to access them afterwards if necessary. One option is to have
