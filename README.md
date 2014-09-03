@@ -37,7 +37,9 @@ There might be bugs. If you find one feel free to report it or even better fix i
 Release
 -------
 
-MockInjector is available on maven central:
+MockInjector is available on maven central.
+
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.hypoport/mockito-mockinjector/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.hypoport/mockito-mockinjector)
 
 ```xml
 <dependency>
