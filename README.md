@@ -62,49 +62,51 @@ Provider injection is somewhat work in progress
 
 Example:
 
-    import javax.inject.Inject;
-    import javax.inject.Provider;
+```java
+import javax.inject.Inject;
+import javax.inject.Provider;
 
-    public class SampleOrchestratingServiceWithProviders {
+public class SampleOrchestratingServiceWithProviders {
 
-      @Inject
-      Provider<SampleDependentServiceOne> sampleDependentServiceOneProvider;
+  @Inject
+  Provider<SampleDependentServiceOne> sampleDependentServiceOneProvider;
 
-      @Inject
-      Provider<SampleDependentServiceTwo> sampleDependentServiceTwoProvider;
+  @Inject
+  Provider<SampleDependentServiceTwo> sampleDependentServiceTwoProvider;
 
-    }
+}
 
-    import static org.hypoport.mockito.MockInjector.injectMocks;
-    import static org.hypoport.mockito.MockProvider.mockProvider;
+import static org.hypoport.mockito.MockInjector.injectMocks;
+import static org.hypoport.mockito.MockProvider.mockProvider;
 
-    public class SampleOrchestratingServiceWithProvidersUnitTest {
+public class SampleOrchestratingServiceWithProvidersUnitTest {
 
-      SampleOrchestratingServiceWithProviders sampleOrchestratingServiceWithProviders;
-      ResultOfDependentServiceOne resultOfDependentServiceOne;
+  SampleOrchestratingServiceWithProviders sampleOrchestratingServiceWithProviders;
+  ResultOfDependentServiceOne resultOfDependentServiceOne;
 
-      @BeforeMethod
-      public void setUp() {
-        sampleOrchestratingServiceWithProviders = injectMocks(SampleOrchestratingServiceWithProviders.class);
+  @BeforeMethod
+  public void setUp() {
+    sampleOrchestratingServiceWithProviders = injectMocks(SampleOrchestratingServiceWithProviders.class);
 
-        // by default, the Provider will return always the same instance ("SINGLETON" scope), then you can stub the result
-        resultOfDependentServiceOne = new ResultOfDependentServiceOne();
-        when(sampleOrchestratingServiceWithProviders.sampleDependentServiceOneProvider.get().getResult(any(ServiceInputParameter.class), any(ServiceInputParameter.class))).thenReturn(resultOfDependentServiceOne);
+    // by default, the Provider will return always the same instance ("SINGLETON" scope), then you can stub the result
+    resultOfDependentServiceOne = new ResultOfDependentServiceOne();
+    when(sampleOrchestratingServiceWithProviders.sampleDependentServiceOneProvider.get().getResult(any(ServiceInputParameter.class), any(ServiceInputParameter.class))).thenReturn(resultOfDependentServiceOne);
 
-        // this will return always a new instance.
-        sampleOrchestratingServiceWithProviders.sampleDependentServiceTwoProvider = mockProvider(SampleDependentServiceTwo.class, MockProvider.Scope.PROTOTYPE);
-      }
+    // this will return always a new instance.
+    sampleOrchestratingServiceWithProviders.sampleDependentServiceTwoProvider = mockProvider(SampleDependentServiceTwo.class, MockProvider.Scope.PROTOTYPE);
+  }
 
-      @Test
-      public void happyPath() {
+  @Test
+  public void happyPath() {
 
-        // when
-        ResultOfDependentServiceTwo resultOfOrchestratingService = sampleOrchestratingServiceWithProviders.doService(firstParameter, secondParameter);
+    // when
+    ResultOfDependentServiceTwo resultOfOrchestratingService = sampleOrchestratingServiceWithProviders.doService(firstParameter, secondParameter);
 
-        // Since we can not do stubbing on every new created instance the result will always be null.
-        assertThat(resultOfOrchestratingService).isNull();
-      }
-    }
+    // Since we can not do stubbing on every new created instance the result will always be null.
+    assertThat(resultOfOrchestratingService).isNull();
+  }
+}
+```
 
 Todos
 -----
