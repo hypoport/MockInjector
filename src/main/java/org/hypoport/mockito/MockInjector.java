@@ -26,6 +26,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.Set;
 
 import static org.mockito.Mockito.mock;
@@ -84,9 +85,8 @@ public class MockInjector {
           return instantiated;
         }
       }
-      T object = clazz.newInstance();
-      injectFieldsAndSetters(object, clazz);
-      return object;
+      // we hopefully never get here:
+      throw new RuntimeException("no constructor found for class " + clazz);
     }
     catch (RuntimeException e) {
       throw e;
@@ -178,30 +178,62 @@ public class MockInjector {
   }
 
   private static Object mockIfMockable(Class parameterType) {
-    if (new MockCreationValidator().isTypeMockable(parameterType)) {
-      return mock(parameterType);
+    try {
+      if (new MockCreationValidator().isTypeMockable(parameterType)) {
+        return mock(parameterType);
+      }
+    }
+    catch (Throwable t) {
+      throw new RuntimeException("could not create mock for " + parameterType);
     }
     return null;
   }
 
   private static void mockField(Object object, Field field) throws IllegalAccessException {
     field.setAccessible(true);
-    if (Provider.class.isAssignableFrom(field.getType())) {
-      field.set(object, mockProvider(field.getGenericType()));
+    Class<?> fieldType = field.getType();
+    if (Modifier.isFinal(fieldType.getModifiers())) {
+      return; // don't touch final fields
     }
-    else if (!Modifier.isFinal(field.getType().getModifiers())) {
-      Object mock = mockIfMockable(field.getType());
-      if (mock != null) {
-        field.set(object, mock);
+    else {
+      if (Provider.class.isAssignableFrom(fieldType)) {
+        Object mock = mockProvider(field.getGenericType());
+        if (mock == null) { // provider mocking not possible, try normal mocking
+          mock = mockIfMockable(fieldType);
+        }
+        if (mock != null) {
+          field.set(object, mock);
+        }
+      }
+      else {
+        Object mock = mockIfMockable(fieldType);
+        if (mock != null) {
+          field.set(object, mock);
+        }
       }
     }
   }
 
   private static MockProvider mockProvider(Type fieldGenericType) {
-    Type providedType = ((ParameterizedType) fieldGenericType).getActualTypeArguments()[0];
-    if (providedType instanceof ParameterizedType) {
-      providedType = ((ParameterizedType) providedType).getRawType();
+    try {
+      Type providedType = ((ParameterizedType) fieldGenericType).getActualTypeArguments()[0];
+      if (providedType instanceof ParameterizedType) {
+        providedType = ((ParameterizedType) providedType).getRawType();
+      }
+      if (providedType instanceof Class) {
+        return spy(MockProvider.mockProvider((Class) providedType));
+      }
+      if (providedType instanceof TypeVariable) {
+        // no provider mocking possible: we can not mock a provider without information about the type of the result
+        return null;
+      }
+      else {
+        // no provider mocking possible:
+        return null;
+      }
     }
-    return spy(MockProvider.mockProvider((Class) providedType));
+    catch (Exception e) {
+      throw new RuntimeException("could not mock provider for type " + fieldGenericType, e);
+    }
   }
 }
