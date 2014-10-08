@@ -2,6 +2,11 @@ MockInjector
 ============
 Use a single statement to populate your object under test with (Mockito-)mocks
 
+What's new in Version 1.1?
+--------------------------
+- Fixes for usage with Mockito 1.10.5
+- better exception messages
+
 How do I use it?
 ----------------
 1. Annotate your dependencies (you already did that, right?)
@@ -45,7 +50,7 @@ MockInjector is available on maven central.
 <dependency>
     <groupId>org.hypoport</groupId>
     <artifactId>mockito-mockinjector</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
 </dependency>
 ```
 
