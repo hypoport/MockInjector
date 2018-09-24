@@ -15,20 +15,21 @@
  */
 package org.hypoport.mockito;
 
-import javax.inject.Provider;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Set;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 
 /**
  * Tool to inject all fields of any class <ul> <li>supports constructor injection, field injection and setter injection</li>
  * <li>does not inject via setter, if one parameter is not mockable (e.g.: String) in order to avoid NullPointerExceptions</li>
  * <li>supports javax, spring and guice annotations by default</li> <li>supported annotations can be configured using {@link
- * MockInjectorConfigurator} before the first call</li> <li>supports javax.inject.Provider as provider by default returning the
- * same mock object every time {@link org.hypoport.mockito.MockProvider}</li> </ul>
+ * MockInjectorConfigurator} before the first call</li> </ul>
  */
 public class MockInjector {
 
@@ -183,41 +184,10 @@ public class MockInjector {
     if (Modifier.isFinal(fieldType.getModifiers())) {
       return; // don't touch final fields
     } else {
-      if (Provider.class.isAssignableFrom(fieldType)) {
-        Object mock = mockProvider(field.getGenericType());
-        if (mock == null) { // provider mocking not possible, try normal mocking
-          mock = mockIfMockable(fieldType);
-        }
-        if (mock != null) {
-          field.set(object, mock);
-        }
-      } else {
         Object mock = mockIfMockable(fieldType);
         if (mock != null) {
           field.set(object, mock);
-        }
       }
-    }
-  }
-
-  private static MockProvider mockProvider(Type fieldGenericType) {
-    try {
-      Type providedType = ((ParameterizedType) fieldGenericType).getActualTypeArguments()[0];
-      if (providedType instanceof ParameterizedType) {
-        providedType = ((ParameterizedType) providedType).getRawType();
-      }
-      if (providedType instanceof Class) {
-        return spy(MockProvider.mockProvider((Class) providedType));
-      }
-      if (providedType instanceof TypeVariable) {
-        // no provider mocking possible: we can not mock a provider without information about the type of the result
-        return null;
-      } else {
-        // no provider mocking possible:
-        return null;
-      }
-    } catch (Exception e) {
-      throw new RuntimeException("could not mock provider for type " + fieldGenericType, e);
     }
   }
 }
