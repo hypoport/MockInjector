@@ -39,7 +39,7 @@ public class MockInjector {
    * injects all injection annotated fields with mocks no constructor injection possible ;-)
    *
    * @param object to be filled with mocks
-   * @param <T>
+   * @param <T> type of object
    * @return the mock object from the argument
    */
   public static <T> T injectMocks(T object) {
@@ -57,7 +57,7 @@ public class MockInjector {
    * creates an instance of the given class and injects all injection annotated fields with mocks
    *
    * @param clazz class to be instantiated and filled with mocks
-   * @param <T>
+   * @param <T> type of the class
    * @return the instantiated object
    */
   public static <T> T injectMocks(Class<T> clazz) {

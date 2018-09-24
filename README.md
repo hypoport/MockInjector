@@ -2,10 +2,9 @@ MockInjector
 ============
 Use a single statement to populate your object under test with (Mockito-)mocks
 
-What's new in Version 1.1?
+What's new in Version 2.0?
 --------------------------
-- Fixes for usage with Mockito 1.10.5
-- better exception messages
+No special support for injection of providers. Providers will be mocked like all other classes.
 
 How do I use it?
 ================
@@ -25,7 +24,7 @@ For an more complete example see `example/src/test/java/org/hypoport/mockito/exa
 You can configure your own annotations using MockInjectorConfigurator.setInjectAnnotations() before the first call to
 injectMocks().
 
-You can find a more detailed introduction on http://blog-it.hypoport.de/2014/01/15/use-mockinjector-and-package-protected-scope-for-dependencies-to-reduce-boilerplate-code/
+You can find a more detailed introduction on https://tech.europace.de/use-mockinjector-and-package-protected-scope-for-dependencies-to-reduce-boilerplate-code/
 
 Limitations
 -----------
@@ -41,10 +40,6 @@ There might be bugs. If you find one feel free to report it or even better fix i
 
 Release
 =======
-
-MockInjector is available on maven central.
-
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.hypoport/mockito-mockinjector/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.hypoport/mockito-mockinjector)
 
 We do not want to release a new version of MockInjector every time when Mockito releases a new version.
 Therefor we have decided to declare an open-ended version range for our mockito dependency
@@ -63,7 +58,7 @@ Declare your own mockito dependency:
 <dependency>
     <groupId>org.hypoport</groupId>
     <artifactId>mockito-mockinjector</artifactId>
-    <version>1.1</version>
+    <version>2.0</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -81,7 +76,7 @@ You should declare a resolution strategy:
 ```
 dependencies {
   testCompile 'org.mockito:mockito-core:#your-favorite-version#'
-  testCompile 'org.hypoport:mockito-mockinjector:1.1'
+  testCompile 'org.hypoport:mockito-mockinjector:2.0'
 }
 
 configurations.all {
@@ -91,65 +86,4 @@ configurations.all {
 
 Provider
 ========
-Provider injection is somewhat work in progress
-
--   We currently do not support google.inject.Provider
--   You can configure your MockProvider with SINGLETON or PROTOTYPE strategy.
-    - SINGLETON is the default and returns the same mock object every time
-    - PROTOTYPE returns a new mock object for every call
--   Often it is preferable to “manually” stub providers.
-
-Example:
-
-```java
-import javax.inject.Inject;
-import javax.inject.Provider;
-
-public class SampleOrchestratingServiceWithProviders {
-
-  @Inject
-  Provider<SampleDependentServiceOne> sampleDependentServiceOneProvider;
-
-  @Inject
-  Provider<SampleDependentServiceTwo> sampleDependentServiceTwoProvider;
-
-}
-
-import static org.hypoport.mockito.MockInjector.injectMocks;
-import static org.hypoport.mockito.MockProvider.mockProvider;
-
-public class SampleOrchestratingServiceWithProvidersUnitTest {
-
-  SampleOrchestratingServiceWithProviders sampleOrchestratingServiceWithProviders;
-  ResultOfDependentServiceOne resultOfDependentServiceOne;
-
-  @BeforeMethod
-  public void setUp() {
-    sampleOrchestratingServiceWithProviders = injectMocks(SampleOrchestratingServiceWithProviders.class);
-
-    // by default, the Provider will return always the same instance ("SINGLETON" scope), then you can stub the result
-    resultOfDependentServiceOne = new ResultOfDependentServiceOne();
-    when(sampleOrchestratingServiceWithProviders.sampleDependentServiceOneProvider.get().getResult(any(ServiceInputParameter.class), any(ServiceInputParameter.class))).thenReturn(resultOfDependentServiceOne);
-
-    // this will return always a new instance.
-    sampleOrchestratingServiceWithProviders.sampleDependentServiceTwoProvider = mockProvider(SampleDependentServiceTwo.class, MockProvider.Scope.PROTOTYPE);
-  }
-
-  @Test
-  public void happyPath() {
-
-    // when
-    ResultOfDependentServiceTwo resultOfOrchestratingService = sampleOrchestratingServiceWithProviders.doService(firstParameter, secondParameter);
-
-    // Since we can not do stubbing on every new created instance the result will always be null.
-    assertThat(resultOfOrchestratingService).isNull();
-  }
-}
-```
-
-Todos
------
--   Improve MockProvider
-    - add support for google - Provider
-    - remove compile time dependency for javax.inject
-    - Idea: dynamic proxy implementation.
+Provider injection will not be supported in the future because it was rarely used and had some strange behaviour.
