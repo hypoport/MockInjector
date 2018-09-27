@@ -4,7 +4,7 @@ Use a single statement to populate your object under test with (Mockito-)mocks
 
 What's new in Version 2.0?
 --------------------------
-No special support for injection of providers. Providers will be mocked like all other classes.
+No special support for injection of providers anymore. Providers will be mocked like all other classes.
 
 How do I use it?
 ================
@@ -28,15 +28,12 @@ You can find a more detailed introduction on https://tech.europace.de/use-mockin
 
 Limitations
 -----------
-Since you do not create your mocks by hand you need some way to access them afterwards if necessary. One option is to have
-test and implementation in the same package and make your fields package local.
+Since you do not create your mocks manually you need some way to access them afterwards if necessary. Our preferred way is to have
+test and implementation classes in the same package and make your fields package local.
 
 If the class of injected instance is not mockable (e.g. a final class) null or nothing at all is injected, depending on the
 type of injection (parameter vs. field injection).
 
-Bugs
-----
-There might be bugs. If you find one feel free to report it or even better fix it.
 
 Release
 =======
@@ -84,6 +81,15 @@ configurations.all {
 }
 ```
 
-Provider
-========
-Provider injection will not be supported in the future because it was rarely used and had some strange behaviour.
+Provider and migration from version 1.1
+---------------------------------------
+Auto configuration of provider injection is not supported anymore because it was complicated, rarely used and had some strange behaviour.
+If you need to mock a provider, please configure it manually:
+
+
+      public void setUp() {
+        serviceUnderTest = injectMocks(Service.class);
+        given(serviceUnderTest.myProvider.get()).willReturn(providerResult);
+      ...
+
+When moving from mockInjector:1.1 to version 2.0 you will have to do that for every provider. 
