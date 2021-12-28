@@ -22,13 +22,18 @@
 
   <groupId>org.hypoport</groupId>
   <artifactId>mockito-mockinjector</artifactId>
-  <version>2.1-SNAPSHOT</version>
+  <version>2.2-SNAPSHOT</version>
 
   <parent>
     <groupId>org.sonatype.oss</groupId>
     <artifactId>oss-parent</artifactId>
     <version>7</version>
   </parent>
+
+  <properties>
+    <maven.compiler.source>9</maven.compiler.source>
+    <maven.compiler.target>9</maven.compiler.target>
+  </properties>
 
   <developers>
     <developer>
@@ -60,7 +65,7 @@
     <url>https://github.com/hypoport/MockInjector</url>
     <connection>scm:git:ssh://git@github.com/hypoport/MockInjector.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/hypoport/MockInjector.git</developerConnection>
-    <tag>mockito-mockinjector-2.0</tag>
+    <tag>mockito-mockinjector-2.1</tag>
   </scm>
 
   <issueManagement>
@@ -81,16 +86,12 @@
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-        </configuration>
+        <version>3.8.1</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>2.2.1</version>
+        <version>3.2.1</version>
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -103,7 +104,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.9.1</version>
+        <version>3.1.1</version>
         <executions>
           <execution>
             <id>attach-javadocs</id>
@@ -162,9 +163,28 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+      <version>[1.2,)</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-core -->
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-core</artifactId>
+      <version>[2.0.0.Final,)</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-arc</artifactId>
+      <version>[2.0.0.Final,)</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>5.14.9</version>
+      <version>7.4.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
