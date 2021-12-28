@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 HYPOPORT AG
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,42 +17,39 @@ package org.hypoport.mockito;
 
 import java.lang.annotation.Annotation;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class MockInjectorConfigurator {
 
-  private static HashSet<String> injectAnnotationClassesAsStrings;
-
-  public static void setInjectAnnotations(Class<? extends Annotation>... classesToInject) {
-    injectAnnotationClassesAsStrings = new HashSet<String>();
-    for (Class<? extends Annotation> toInject : classesToInject) {
-      injectAnnotationClassesAsStrings.add(toInject.getCanonicalName());
-    }
-  }
+  private static final Set<String> injectAnnotationClassesAsStrings = Set.of(
+          "javax.inject.Inject",
+          "javax.annotation.Resource",
+          "org.springframework.beans.factory.annotation.Required",
+          "org.springframework.beans.factory.annotation.Autowired",
+          "com.google.inject.Inject",
+          "io.quarkus.arc.log.LoggerName"
+  );
 
   public static Set<Class<? extends Annotation>> getInjectAnnotations() {
-    if (injectAnnotationClassesAsStrings == null) {
-      injectAnnotationClassesAsStrings = new HashSet<String>();
-      injectAnnotationClassesAsStrings.add("javax.inject.Inject");
-      injectAnnotationClassesAsStrings.add("javax.annotation.Resource");
-      injectAnnotationClassesAsStrings.add("org.springframework.beans.factory.annotation.Required");
-      injectAnnotationClassesAsStrings.add("org.springframework.beans.factory.annotation.Autowired");
-      injectAnnotationClassesAsStrings.add("com.google.inject.Inject");
-    }
+    return injectAnnotationClassesAsStrings.stream()
+            .map(MockInjectorConfigurator::findClassForName)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toSet());
+  }
 
-    Set<Class<? extends Annotation>> classesToInject = new HashSet<Class<? extends Annotation>>();
-    for (String injectAnnotationAsString : injectAnnotationClassesAsStrings) {
-      try {
-        Class<?> injectAnnotationClass = Class.forName(injectAnnotationAsString);
-        classesToInject.add((Class<? extends Annotation>) injectAnnotationClass);
-      }
-      catch (ClassNotFoundException ignore) {
-        // not in classpath, is OK
-      }
-      catch (ClassCastException cce) {
-        throw new RuntimeException("configured class " + injectAnnotationAsString + " is no annotation.", cce);
-      }
+  private static Class<? extends Annotation>  findClassForName(String className) {
+    try {
+      Class<?> injectAnnotationClass = Class.forName(className);
+      return (Class<? extends Annotation>) injectAnnotationClass;
     }
-    return classesToInject;
+    catch (ClassNotFoundException ignore) {
+      // not in classpath, is OK
+      return null;
+    }
+    catch (ClassCastException cce) {
+      throw new RuntimeException("configured class " + className + " is no annotation.", cce);
+    }
   }
 }
