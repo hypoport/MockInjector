@@ -91,4 +91,12 @@ public class MockInjectorTest {
     Assertions.assertThat(MockUtil.isMock(object.toBeInjected2)).isTrue();
   }
 
+  @Test
+  public void injectMocks_with_Class_can_handle_Constructor_Injection_without_annotation() {
+    ConstructorInjectionClassWithoutAnnotation object = MockInjector.injectMocks(ConstructorInjectionClassWithoutAnnotation.class);
+
+    Assertions.assertThat(MockUtil.isMock(object.toBeInjected1)).isTrue();
+    Assertions.assertThat(MockUtil.isMock(object.toBeInjected2)).isTrue();
+  }
+
 }
