@@ -2,9 +2,10 @@ MockInjector
 ============
 Use a single statement to populate your object under test with (Mockito-)mocks
 
-What's new in Version 2.0?
+What's new in Version 2.1?
 --------------------------
-No special support for injection of providers anymore. Providers will be mocked like all other classes.
+* Migration to Java Version 9
+* Support for Quarkus [@LoggerName](https://quarkus.io/guides/logging) injection
 
 How do I use it?
 ================
@@ -12,7 +13,7 @@ How do I use it?
 2. call injectMocks(classUnderTest)
 3. configure your mocks if necessary
 
-Runs out of the box with javax, spring and guice annotations. Initializing all injected dependencies of a service with
+Runs out of the box with Javax, Spring, Guice and Quarkus annotations. Initializing all injected dependencies of a service with
 mocks is as simple as:
 
       public void setUp() {
@@ -55,7 +56,7 @@ Declare your own mockito dependency:
 <dependency>
     <groupId>org.hypoport</groupId>
     <artifactId>mockito-mockinjector</artifactId>
-    <version>2.0</version>
+    <version>2.2</version>
     <scope>test</scope>
 </dependency>
 ```

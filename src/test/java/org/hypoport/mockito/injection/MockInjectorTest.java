@@ -17,21 +17,12 @@ package org.hypoport.mockito.injection;
 
 import org.fest.assertions.Assertions;
 import org.hypoport.mockito.MockInjector;
-import org.hypoport.mockito.MockInjectorConfigurator;
 import org.mockito.internal.util.MockUtil;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
-import javax.annotation.Resource;
-import javax.inject.Inject;
 import java.lang.reflect.Field;
 
 public class MockInjectorTest {
-
-  @BeforeSuite
-  public void initInjection() {
-    MockInjectorConfigurator.setInjectAnnotations(Inject.class, Resource.class);
-  }
 
   @Test
   public void injectMocks_injects_mocks_into_annotated_fields() {
@@ -91,4 +82,10 @@ public class MockInjectorTest {
     Assertions.assertThat(MockUtil.isMock(object.toBeInjected2)).isTrue();
   }
 
+  @Test
+  public void should_inject_a_Logger_Mock_for_Quarkus_arc_annotation() {
+    AClassWithLogger object = MockInjector.injectMocks(AClassWithLogger.class);
+
+    Assertions.assertThat(MockUtil.isMock(object.log)).isTrue();
+  }
 }
