@@ -16,10 +16,11 @@
 package org.hypoport.mockito;
 
 import java.lang.annotation.Annotation;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.requireNonNull;
 
 public class MockInjectorConfigurator {
 
@@ -32,11 +33,24 @@ public class MockInjectorConfigurator {
           "io.quarkus.arc.log.LoggerName"
   );
 
-  public static Set<Class<? extends Annotation>> getInjectAnnotations() {
-    return injectAnnotationClassesAsStrings.stream()
+  private static Set<Class<? extends Annotation>> additionalInjectAnnotations = Set.of();
+
+    /**
+     * Option to add additional, own inject annotations to the MockInjector.
+     * @param classesToInject
+     */
+  @SafeVarargs // Using Set.of for @SafeVarargs. See also: https://www.baeldung.com/java-safevarargs
+  public static void setInjectAnnotations(Class<? extends Annotation>... classesToInject) {
+    additionalInjectAnnotations = Objects.nonNull(classesToInject) ? Set.of(classesToInject) : additionalInjectAnnotations;
+  }
+
+  static Set<Class<? extends Annotation>> getInjectAnnotations() {
+    final Set<Class<? extends Annotation>> allInjectAnnotations = injectAnnotationClassesAsStrings.stream()
             .map(MockInjectorConfigurator::findClassForName)
             .filter(Objects::nonNull)
             .collect(Collectors.toSet());
+    allInjectAnnotations.addAll(additionalInjectAnnotations);
+    return allInjectAnnotations;
   }
 
   private static Class<? extends Annotation>  findClassForName(String className) {
