@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 HYPOPORT AG
+ * Copyright 2022 HYPOPORT AG
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,16 +15,13 @@
  */
 package org.hypoport.mockito.injection;
 
+public class ConstructorInjectionClassWithoutAnnotation {
 
-import javax.inject.Inject;
-import javax.inject.Provider;
+  MyClass toBeInjected1;
+  Object toBeInjected2;
 
-public class ClassWithProvider {
-
-  @Inject
-  Provider<SubClass<String>> classProvider;
-
-  public static class SubClass<T> {
-
+  private ConstructorInjectionClassWithoutAnnotation(MyClass toBeInjected1, Object toBeInjected2) {
+    this.toBeInjected1 = toBeInjected1;
+    this.toBeInjected2 = toBeInjected2;
   }
 }

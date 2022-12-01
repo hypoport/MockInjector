@@ -65,21 +65,34 @@ public class MockInjector {
       Constructor<?>[] constructors = clazz.getDeclaredConstructors();
       for (Constructor<?> constructor : constructors) {
         if (shouldBeInjected(constructor.getDeclaredAnnotations()) || constructor.getParameterTypes().length == 0) {
-          constructor.setAccessible(true);
-          Class<?>[] parameterTypes = constructor.getParameterTypes();
-          Object[] mocks = createMocksForParameterTypes(parameterTypes);
-          T instantiated = (T) constructor.newInstance(mocks);
-          injectFieldsAndSetters(instantiated, clazz);
-          return instantiated;
+          return createObjectAndInjectMocks(clazz, constructor);
         }
       }
+      // no annotated constructor found:
+      if (constructors.length == 1) {
+        return createObjectAndInjectMocks(clazz, constructors[0]);
+      }
       // we hopefully never get here:
-      throw new RuntimeException("no constructor found for class " + clazz);
+      throw new RuntimeException("no usable constructor found for class " + clazz);
     } catch (RuntimeException e) {
       throw e;
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
+  }
+
+  private static <T> T createObjectAndInjectMocks(Class<T> clazz, Constructor<?> constructor) throws InstantiationException, IllegalAccessException, InvocationTargetException {
+    T instantiated = createObjectUsingConstructor(constructor);
+    injectFieldsAndSetters(instantiated, clazz);
+    return instantiated;
+  }
+
+  private static <T> T createObjectUsingConstructor(Constructor<?> constructor) throws InstantiationException, IllegalAccessException, InvocationTargetException {
+    constructor.setAccessible(true);
+    Class<?>[] parameterTypes = constructor.getParameterTypes();
+    Object[] mocks = createMocksForParameterTypes(parameterTypes);
+    T instantiated = (T) constructor.newInstance(mocks);
+    return instantiated;
   }
 
   public static void injectFieldsAndSetters(Object object, Class<?> objectClass) throws IllegalAccessException, InvocationTargetException {
