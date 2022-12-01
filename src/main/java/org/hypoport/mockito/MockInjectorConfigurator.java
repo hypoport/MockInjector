@@ -16,6 +16,7 @@
 package org.hypoport.mockito;
 
 import java.lang.annotation.Annotation;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,8 +36,12 @@ public class MockInjectorConfigurator {
       injectAnnotationClassesAsStrings = getDefaultInjectAnnotations();
     }
 
+    return getClassesFromStrings(injectAnnotationClassesAsStrings);
+  }
+
+  public static Set<Class<? extends Annotation>> getClassesFromStrings(Collection<String> classesAsStrings) {
     Set<Class<? extends Annotation>> classesToInject = new HashSet<Class<? extends Annotation>>();
-    for (String injectAnnotationAsString : injectAnnotationClassesAsStrings) {
+    for (String injectAnnotationAsString : classesAsStrings) {
       try {
         Class<?> injectAnnotationClass = Class.forName(injectAnnotationAsString);
         classesToInject.add((Class<? extends Annotation>) injectAnnotationClass);
