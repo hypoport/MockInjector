@@ -17,21 +17,12 @@ package org.hypoport.mockito.injection;
 
 import org.fest.assertions.Assertions;
 import org.hypoport.mockito.MockInjector;
-import org.hypoport.mockito.MockInjectorConfigurator;
 import org.mockito.internal.util.MockUtil;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
-import javax.annotation.Resource;
-import javax.inject.Inject;
 import java.lang.reflect.Field;
 
 public class MockInjectorTest {
-
-  @BeforeSuite
-  public void initInjection() {
-    MockInjectorConfigurator.setInjectAnnotations(Inject.class, Resource.class);
-  }
 
   @Test
   public void injectMocks_injects_mocks_into_annotated_fields() {
@@ -44,6 +35,7 @@ public class MockInjectorTest {
     Assertions.assertThat(MockUtil.isMock(object.resource)).isTrue();
     Assertions.assertThat(MockUtil.isMock(object.notInjected)).isFalse();
     Assertions.assertThat(MockUtil.isMock(object.injectedProvider)).isTrue();
+    Assertions.assertThat(MockUtil.isMock(object.jakartaInjected)).isTrue();
   }
 
   @Test
@@ -69,6 +61,7 @@ public class MockInjectorTest {
     Assertions.assertThat(MockUtil.isMock(object.resource)).isTrue();
     Assertions.assertThat(MockUtil.isMock(object.notInjected)).isFalse();
     Assertions.assertThat(MockUtil.isMock(object.injectedProvider)).isTrue();
+    Assertions.assertThat(MockUtil.isMock(object.jakartaInjected)).isTrue();
   }
 
   @Test
@@ -86,6 +79,14 @@ public class MockInjectorTest {
   @Test
   public void injectMocks_with_Class_can_handle_Constructor_Injection() {
     ConstructorInjectionClass object = MockInjector.injectMocks(ConstructorInjectionClass.class);
+
+    Assertions.assertThat(MockUtil.isMock(object.toBeInjected1)).isTrue();
+    Assertions.assertThat(MockUtil.isMock(object.toBeInjected2)).isTrue();
+  }
+
+  @Test
+  public void injectMocks_with_Class_can_handle_Constructor_Injection_without_annotation() {
+    ConstructorInjectionClassWithoutAnnotation object = MockInjector.injectMocks(ConstructorInjectionClassWithoutAnnotation.class);
 
     Assertions.assertThat(MockUtil.isMock(object.toBeInjected1)).isTrue();
     Assertions.assertThat(MockUtil.isMock(object.toBeInjected2)).isTrue();

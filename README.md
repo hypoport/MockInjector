@@ -12,7 +12,7 @@ How do I use it?
 2. call injectMocks(classUnderTest)
 3. configure your mocks if necessary
 
-Runs out of the box with javax, spring and guice annotations. Initializing all injected dependencies of a service with
+Runs out of the box with javax, jakarta, spring and guice annotations. Initializing all injected dependencies of a service with
 mocks is as simple as:
 
       public void setUp() {
