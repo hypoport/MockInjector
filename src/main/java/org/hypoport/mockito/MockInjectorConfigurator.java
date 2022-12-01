@@ -32,12 +32,7 @@ public class MockInjectorConfigurator {
 
   public static Set<Class<? extends Annotation>> getInjectAnnotations() {
     if (injectAnnotationClassesAsStrings == null) {
-      injectAnnotationClassesAsStrings = new HashSet<String>();
-      injectAnnotationClassesAsStrings.add("javax.inject.Inject");
-      injectAnnotationClassesAsStrings.add("javax.annotation.Resource");
-      injectAnnotationClassesAsStrings.add("org.springframework.beans.factory.annotation.Required");
-      injectAnnotationClassesAsStrings.add("org.springframework.beans.factory.annotation.Autowired");
-      injectAnnotationClassesAsStrings.add("com.google.inject.Inject");
+      injectAnnotationClassesAsStrings = getDefaultInjectAnnotations();
     }
 
     Set<Class<? extends Annotation>> classesToInject = new HashSet<Class<? extends Annotation>>();
@@ -54,5 +49,16 @@ public class MockInjectorConfigurator {
       }
     }
     return classesToInject;
+  }
+
+  public static HashSet<String> getDefaultInjectAnnotations() {
+    HashSet<String> defaultAnnotations = new HashSet<String>();
+    defaultAnnotations.add("jakarta.inject.Inject");
+    defaultAnnotations.add("javax.inject.Inject");
+    defaultAnnotations.add("javax.annotation.Resource");
+    defaultAnnotations.add("org.springframework.beans.factory.annotation.Required");
+    defaultAnnotations.add("org.springframework.beans.factory.annotation.Autowired");
+    defaultAnnotations.add("com.google.inject.Inject");
+    return defaultAnnotations;
   }
 }
