@@ -15,8 +15,6 @@
  */
 package org.hypoport.mockito.injection;
 
-import javax.inject.Inject;
-
 public class ConstructorInjectionClassWithoutAnnotation {
 
   MyClass toBeInjected1;
