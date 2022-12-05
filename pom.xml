@@ -113,39 +113,6 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>com.mycila.maven-license-plugin</groupId>
-        <artifactId>maven-license-plugin</artifactId>
-        <version>1.9.0</version>
-        <configuration>
-          <header>${basedir}/LICENSE.txt</header>
-          <encoding>${project.build.sourceEncoding}</encoding>
-          <strictCheck>true</strictCheck>
-          <useDefaultExcludes>false</useDefaultExcludes>
-          <excludes>
-            <exclude>target/**</exclude>
-            <exclude>**/.git</exclude>
-            <exclude>**/.gitignore</exclude>
-            <exclude>**/.git/**</exclude>
-            <exclude>**/*.odt</exclude>
-            <exclude>.idea/**</exclude>
-            <exclude>*.iml</exclude>
-            <exclude>LICENSE*</exclude>
-            <exclude>README*</exclude>
-            <exclude>release.properties</exclude>
-            <exclude>pom.xml.releaseBackup</exclude>
-          </excludes>
-        </configuration>
-        <executions>
-          <execution>
-            <id>check-license</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
 
