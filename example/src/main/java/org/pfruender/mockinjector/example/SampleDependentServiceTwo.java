@@ -13,8 +13,9 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.pfruender.mockito.example;
+package org.pfruender.mockinjector.example;
 
-public class ServiceInputParameter {
+public interface SampleDependentServiceTwo {
 
+  ResultOfDependentServiceTwo getResult(ResultOfDependentServiceOne result1);
 }

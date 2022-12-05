@@ -13,21 +13,21 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.pfruender.mockito.provider;
+package org.pfruender.mockinjector.example;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-public class MyClassWithProviders {
+public class SampleOrchestratingServiceWithProviders {
 
   @Inject
-  Provider<IProvided> objectProvider;
+  Provider<SampleDependentServiceOne> sampleDependentServiceOneProvider;
 
-  public String getSomething() {
-    return objectProvider.get().getSomething();
-  }
+  @Inject
+  Provider<SampleDependentServiceTwo> sampleDependentServiceTwoProvider;
 
-  public Object getObject() {
-    return objectProvider.get().getObject();
+  public ResultOfDependentServiceTwo doService(ServiceInputParameter param1, ServiceInputParameter param2) {
+    ResultOfDependentServiceOne result1 = sampleDependentServiceOneProvider.get().getResult(param1, param2);
+    return sampleDependentServiceTwoProvider.get().getResult(result1);
   }
 }

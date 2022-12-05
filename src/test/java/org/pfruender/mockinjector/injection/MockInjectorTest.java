@@ -13,9 +13,9 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.pfruender.mockito.injection;
+package org.pfruender.mockinjector.injection;
 
-import org.pfruender.mockito.MockInjector;
+import org.pfruender.mockinjector.MockInjector;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Field;

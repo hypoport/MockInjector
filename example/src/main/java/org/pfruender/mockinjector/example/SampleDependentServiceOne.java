@@ -13,11 +13,9 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.pfruender.mockito.provider;
+package org.pfruender.mockinjector.example;
 
-public interface IProvided {
+public interface SampleDependentServiceOne {
 
-  String getSomething();
-
-  Object getObject();
+  ResultOfDependentServiceOne getResult(ServiceInputParameter param1, ServiceInputParameter param2);
 }

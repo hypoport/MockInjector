@@ -13,20 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.pfruender.mockito.example;
+package org.pfruender.mockinjector.example;
 
-import javax.inject.Inject;
+public class ServiceInputParameter {
 
-public class SampleOrchestratingService {
-
-  @Inject
-  SampleDependentServiceOne dependentServiceOne;
-
-  @Inject
-  SampleDependentServiceTwo dependentServiceTwo;
-
-  public ResultOfDependentServiceTwo doService(ServiceInputParameter param1, ServiceInputParameter param2) {
-    ResultOfDependentServiceOne result1 = dependentServiceOne.getResult(param1, param2);
-    return dependentServiceTwo.getResult(result1);
-  }
 }
