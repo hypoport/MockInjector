@@ -13,18 +13,21 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.hypoport.mockito.injection;
+package org.pfruender.mockito.provider;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 
-public class ConstructorInjectionClass {
-
-  MyClass toBeInjected1;
-  Object toBeInjected2;
+public class MyClassWithProviders {
 
   @Inject
-  private ConstructorInjectionClass(MyClass toBeInjected1, Object toBeInjected2) {
-    this.toBeInjected1 = toBeInjected1;
-    this.toBeInjected2 = toBeInjected2;
+  Provider<IProvided> objectProvider;
+
+  public String getSomething() {
+    return objectProvider.get().getSomething();
+  }
+
+  public Object getObject() {
+    return objectProvider.get().getObject();
   }
 }

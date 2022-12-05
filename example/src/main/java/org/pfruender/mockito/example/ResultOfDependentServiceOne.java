@@ -13,8 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.hypoport.mockito.injection;
+package org.pfruender.mockito.example;
 
-public interface Injected {
+public class ResultOfDependentServiceOne {
 
 }
