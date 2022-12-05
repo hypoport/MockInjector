@@ -2,14 +2,18 @@ MockInjector
 ============
 Use a single statement to populate your object under test with (Mockito-)mocks
 
-What's new in Version 2.0?
+What's new in Version 3.0?
 --------------------------
-No special support for injection of providers anymore. Providers will be mocked like all other classes.
+No annotation needed on constructor, if there's just one constructor in the class that gets the dependencies injected. 
+
 
 How do I use it?
 ================
-1. Annotate your dependencies (you already did that, right?)
-2. call injectMocks(classUnderTest)
+
+**Best used with package scope fields!**
+
+1. Optional: Annotate your dependencies
+2. call injectMocks(ClassUnderTest.class)
 3. configure your mocks if necessary
 
 Runs out of the box with javax, jakarta, spring and guice annotations. Initializing all injected dependencies of a service with
@@ -19,7 +23,7 @@ mocks is as simple as:
         serviceUnderTest = injectMocks(Service.class);
       ...
 
-For an more complete example see `example/src/test/java/org/hypoport/mockito/example/SampleOrchestratingServiceUnitTest.java`
+For an more complete example see `example/src/test/java/org/pfruender/mockinjector/example/SampleOrchestratingServiceUnitTest.java`
 
 You can configure your own annotations using MockInjectorConfigurator.setInjectAnnotations() before the first call to
 injectMocks().
@@ -53,9 +57,9 @@ Declare your own mockito dependency:
     <scope>test</scope>
 </dependency>
 <dependency>
-    <groupId>org.hypoport</groupId>
+    <groupId>org.pfruender</groupId>
     <artifactId>mockito-mockinjector</artifactId>
-    <version>2.0</version>
+    <version>3.0</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -73,23 +77,10 @@ You should declare a resolution strategy:
 ```
 dependencies {
   testCompile 'org.mockito:mockito-core:#your-favorite-version#'
-  testCompile 'org.hypoport:mockito-mockinjector:2.0'
+  testCompile 'org.pfruender:mockito-mockinjector:3.0'
 }
 
 configurations.all {
   resolutionStrategy.force 'org.mockito:mockito-core:#your-favorite-version#'
 }
 ```
-
-Provider and migration from version 1.1
----------------------------------------
-Auto configuration of provider injection is not supported anymore because it was complicated, rarely used and had some strange behaviour.
-If you need to mock a provider, please configure it manually:
-
-
-      public void setUp() {
-        serviceUnderTest = injectMocks(Service.class);
-        given(serviceUnderTest.myProvider.get()).willReturn(providerResult);
-      ...
-
-When moving from mockInjector:1.1 to version 2.0 you will have to do that for every provider. 
