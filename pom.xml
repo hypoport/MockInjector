@@ -20,9 +20,9 @@
   <modelVersion>4.0.0</modelVersion>
 
 
-  <groupId>org.hypoport</groupId>
+  <groupId>org.pfruender</groupId>
   <artifactId>mockito-mockinjector</artifactId>
-  <version>2.1-SNAPSHOT</version>
+  <version>3.0-SNAPSHOT</version>
 
   <parent>
     <groupId>org.sonatype.oss</groupId>
@@ -35,17 +35,9 @@
       <name>joergpfruender</name>
       <url>https://github.com/joerg-pfruender</url>
     </developer>
-    <developer>
-      <name>ollio</name>
-      <url>https://github.com/ollio</url>
-    </developer>
-    <developer>
-      <name>e-karge</name>
-      <url>https://github.com/e-karge</url>
-    </developer>
   </developers>
 
-  <url>https://github.com/hypoport/MockInjector</url>
+  <url>https://github.com/joerg-pfruender/MockInjector</url>
   <description>Use a single statement to populate your object under test with Mockito mocks</description>
 
   <licenses>
@@ -57,15 +49,15 @@
 
 
   <scm>
-    <url>https://github.com/hypoport/MockInjector</url>
-    <connection>scm:git:ssh://git@github.com/hypoport/MockInjector.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/hypoport/MockInjector.git</developerConnection>
+    <url>https://github.com/joerg-pfruender/MockInjector</url>
+    <connection>scm:git:ssh://git@github.com:joerg-pfruender/MockInjector.git</connection>
+    <developerConnection>scm:git:git@github.com:joerg-pfruender/MockInjector.git</developerConnection>
     <tag>mockito-mockinjector-2.0</tag>
   </scm>
 
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/hypoport/MockInjector/issues</url>
+    <url>https://github.com/joerg-pfruender/MockInjector/issues</url>
   </issueManagement>
 
   <build>
@@ -113,39 +105,6 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>com.mycila.maven-license-plugin</groupId>
-        <artifactId>maven-license-plugin</artifactId>
-        <version>1.9.0</version>
-        <configuration>
-          <header>${basedir}/LICENSE.txt</header>
-          <encoding>${project.build.sourceEncoding}</encoding>
-          <strictCheck>true</strictCheck>
-          <useDefaultExcludes>false</useDefaultExcludes>
-          <excludes>
-            <exclude>target/**</exclude>
-            <exclude>**/.git</exclude>
-            <exclude>**/.gitignore</exclude>
-            <exclude>**/.git/**</exclude>
-            <exclude>**/*.odt</exclude>
-            <exclude>.idea/**</exclude>
-            <exclude>*.iml</exclude>
-            <exclude>LICENSE*</exclude>
-            <exclude>README*</exclude>
-            <exclude>release.properties</exclude>
-            <exclude>pom.xml.releaseBackup</exclude>
-          </excludes>
-        </configuration>
-        <executions>
-          <execution>
-            <id>check-license</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
 
@@ -161,16 +120,24 @@
       <version>[1,)</version>
       <scope>test</scope>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/jakarta.inject/jakarta.inject-api -->
     <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <version>5.14.9</version>
+      <groupId>jakarta.inject</groupId>
+      <artifactId>jakarta.inject-api</artifactId>
+      <version>2.0.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.easytesting</groupId>
-      <artifactId>fest-assert</artifactId>
-      <version>1.4</version>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>7.4.0</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.23.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
