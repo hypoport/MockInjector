@@ -13,8 +13,21 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.hypoport.mockito.injection;
+package org.pfruender.mockinjector.provider;
 
-public interface Injected {
+import javax.inject.Inject;
+import javax.inject.Provider;
 
+public class MyClassWithProviders {
+
+  @Inject
+  Provider<IProvided> objectProvider;
+
+  public String getSomething() {
+    return objectProvider.get().getSomething();
+  }
+
+  public Object getObject() {
+    return objectProvider.get().getObject();
+  }
 }

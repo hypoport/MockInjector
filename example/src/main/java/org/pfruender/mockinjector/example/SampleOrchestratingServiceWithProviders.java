@@ -13,18 +13,21 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.hypoport.mockito.injection;
+package org.pfruender.mockinjector.example;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 
-public class ConstructorInjectionClass {
-
-  MyClass toBeInjected1;
-  Object toBeInjected2;
+public class SampleOrchestratingServiceWithProviders {
 
   @Inject
-  private ConstructorInjectionClass(MyClass toBeInjected1, Object toBeInjected2) {
-    this.toBeInjected1 = toBeInjected1;
-    this.toBeInjected2 = toBeInjected2;
+  Provider<SampleDependentServiceOne> sampleDependentServiceOneProvider;
+
+  @Inject
+  Provider<SampleDependentServiceTwo> sampleDependentServiceTwoProvider;
+
+  public ResultOfDependentServiceTwo doService(ServiceInputParameter param1, ServiceInputParameter param2) {
+    ResultOfDependentServiceOne result1 = sampleDependentServiceOneProvider.get().getResult(param1, param2);
+    return sampleDependentServiceTwoProvider.get().getResult(result1);
   }
 }

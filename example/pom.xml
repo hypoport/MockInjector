@@ -21,9 +21,9 @@
   <modelVersion>4.0.0</modelVersion>
 
 
-  <groupId>org.hypoport</groupId>
-  <artifactId>mockito-testutils-example</artifactId>
-  <version>1.4</version>
+  <groupId>io.github.joerg-pfruender</groupId>
+  <artifactId>mockito-mockinjector-example</artifactId>
+  <version>3.0-SNAPSHOT</version>
 
   <build>
     <plugins>
@@ -71,68 +71,41 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>com.mycila.maven-license-plugin</groupId>
-        <artifactId>maven-license-plugin</artifactId>
-        <version>1.9.0</version>
-        <configuration>
-          <header>${basedir}/LICENSE.txt</header>
-          <encoding>${project.build.sourceEncoding}</encoding>
-          <strictCheck>true</strictCheck>
-          <useDefaultExcludes>false</useDefaultExcludes>
-          <excludes>
-            <exclude>target/**</exclude>
-            <exclude>**/.git</exclude>
-            <exclude>**/.gitignore</exclude>
-            <exclude>**/.git/**</exclude>
-            <exclude>**/*.odt</exclude>
-            <exclude>.idea/**</exclude>
-            <exclude>*.iml</exclude>
-            <exclude>LICENSE*</exclude>
-            <exclude>README*</exclude>
-            <exclude>release.properties</exclude>
-            <exclude>pom.xml.releaseBackup</exclude>
-          </excludes>
-        </configuration>
-        <executions>
-          <execution>
-            <id>check-license</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
 
   <dependencies>
     <dependency>
-      <groupId>org.hypoport.testutils</groupId>
-      <artifactId>mockito-testutils</artifactId>
-      <version>1.5-SNAPSHOT</version>
+      <groupId>io.github.joerg-pfruender</groupId>
+      <artifactId>mockito-mockinjector</artifactId>
+      <version>3.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>[1.8.5,)</version>
+      <version>4.9.0</version>
     </dependency>
     <dependency>
       <groupId>javax.inject</groupId>
       <artifactId>javax.inject</artifactId>
-      <version>[1,)</version>
+      <version>1</version>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.inject</groupId>
+      <artifactId>jakarta.inject-api</artifactId>
+      <version>2.0.1</version>
     </dependency>
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>5.14.9</version>
+      <version>7.4.0</version>
       <scope>test</scope>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->
     <dependency>
-      <groupId>org.easytesting</groupId>
-      <artifactId>fest-assert</artifactId>
-      <version>1.4</version>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.23.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
