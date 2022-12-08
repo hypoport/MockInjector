@@ -20,7 +20,7 @@
   <modelVersion>4.0.0</modelVersion>
 
 
-  <groupId>org.pfruender</groupId>
+  <groupId>io.github.joerg-pfruender</groupId>
   <artifactId>mockito-mockinjector</artifactId>
   <version>3.0-SNAPSHOT</version>
 
@@ -47,12 +47,10 @@
     </license>
   </licenses>
 
-
   <scm>
     <url>https://github.com/joerg-pfruender/MockInjector</url>
     <connection>scm:git:ssh://git@github.com:joerg-pfruender/MockInjector.git</connection>
     <developerConnection>scm:git:git@github.com:joerg-pfruender/MockInjector.git</developerConnection>
-    <tag>mockito-mockinjector-2.0</tag>
   </scm>
 
   <issueManagement>
@@ -117,7 +115,7 @@
     <dependency>
       <groupId>javax.inject</groupId>
       <artifactId>javax.inject</artifactId>
-      <version>[1,)</version>
+      <version>1</version>
       <scope>test</scope>
     </dependency>
     <!-- https://mvnrepository.com/artifact/jakarta.inject/jakarta.inject-api -->
