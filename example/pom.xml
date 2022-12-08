@@ -23,7 +23,7 @@
 
   <groupId>io.github.joerg-pfruender</groupId>
   <artifactId>mockito-mockinjector-example</artifactId>
-  <version>3.0</version>
+  <version>3.1-SNAPSHOT</version>
 
   <build>
     <plugins>
@@ -78,7 +78,7 @@
     <dependency>
       <groupId>io.github.joerg-pfruender</groupId>
       <artifactId>mockito-mockinjector</artifactId>
-      <version>3.0</version>
+      <version>3.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
