@@ -156,7 +156,7 @@ The traditional way of mocking dependency1 and dependency2 with Mockito is:
     }
 ```
 
-You can also do this using annotations, but that isn't much shorter:
+You can also do this using annotations:
 
 ```java
     class ImplementationClassTest {
@@ -173,7 +173,11 @@ You can also do this using annotations, but that isn't much shorter:
     }
 ```
 
-`MockInjector.injectMocks()` finds all annotated dependencies and injects Mocks for them.
+But that solution is not really much shorter.
+
+Here comes this library:
+
+`org.pfruender.mockinjector.MockInjector.injectMocks()` will find *all* annotated dependencies and injects mocks for them.
 
 There are no dependency variables in the test class, which saves us two lines of code for each dependency.
 
