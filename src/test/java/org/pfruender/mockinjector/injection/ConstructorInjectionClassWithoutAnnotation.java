@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 HYPOPORT AG
+ * Copyright 2022 HYPOPORT AG
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -13,8 +13,15 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.hypoport.mockito.example;
+package org.pfruender.mockinjector.injection;
 
-public class ServiceInputParameter {
+public class ConstructorInjectionClassWithoutAnnotation {
 
+  MyClass toBeInjected1;
+  Object toBeInjected2;
+
+  private ConstructorInjectionClassWithoutAnnotation(MyClass toBeInjected1, Object toBeInjected2) {
+    this.toBeInjected1 = toBeInjected1;
+    this.toBeInjected2 = toBeInjected2;
+  }
 }
