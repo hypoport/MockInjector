@@ -22,13 +22,8 @@
 
   <groupId>io.github.joerg-pfruender</groupId>
   <artifactId>mockito-mockinjector</artifactId>
-  <version>3.0-SNAPSHOT</version>
-
-  <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>7</version>
-  </parent>
+  <version>3.0</version>
+  <name>mockito-mockinjector</name>
 
   <developers>
     <developer>

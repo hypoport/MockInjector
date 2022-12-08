@@ -57,7 +57,7 @@ Declare your own mockito dependency:
     <scope>test</scope>
 </dependency>
 <dependency>
-    <groupId>org.pfruender</groupId>
+    <groupId>io.github.joerg-pfruender</groupId>
     <artifactId>mockito-mockinjector</artifactId>
     <version>3.0</version>
     <scope>test</scope>
@@ -77,7 +77,7 @@ You should declare a resolution strategy:
 ```
 dependencies {
   testCompile 'org.mockito:mockito-core:#your-favorite-version#'
-  testCompile 'org.pfruender:mockito-mockinjector:3.0'
+  testCompile 'io.github.joerg-pfruender:mockito-mockinjector:3.0'
 }
 
 configurations.all {
