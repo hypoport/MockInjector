@@ -27,6 +27,9 @@ public class MyClass {
   @Inject
   Object autowired;
 
+  @jakarta.inject.Inject
+  Object jakartaInjected;
+
   @Resource(name = "namedResource")
   Object resource;
 

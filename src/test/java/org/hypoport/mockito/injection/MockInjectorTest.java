@@ -15,23 +15,15 @@
  */
 package org.hypoport.mockito.injection;
 
-import org.fest.assertions.Assertions;
 import org.hypoport.mockito.MockInjector;
-import org.hypoport.mockito.MockInjectorConfigurator;
-import org.mockito.internal.util.MockUtil;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
-import javax.annotation.Resource;
-import javax.inject.Inject;
 import java.lang.reflect.Field;
 
-public class MockInjectorTest {
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.internal.util.MockUtil.isMock;
 
-  @BeforeSuite
-  public void initInjection() {
-    MockInjectorConfigurator.setInjectAnnotations(Inject.class, Resource.class);
-  }
+public class MockInjectorTest {
 
   @Test
   public void injectMocks_injects_mocks_into_annotated_fields() {
@@ -39,11 +31,12 @@ public class MockInjectorTest {
 
     MockInjector.injectMocks(object);
 
-    Assertions.assertThat(MockUtil.isMock(object.injected)).isTrue();
-    Assertions.assertThat(MockUtil.isMock(object.autowired)).isTrue();
-    Assertions.assertThat(MockUtil.isMock(object.resource)).isTrue();
-    Assertions.assertThat(MockUtil.isMock(object.notInjected)).isFalse();
-    Assertions.assertThat(MockUtil.isMock(object.injectedProvider)).isTrue();
+    assertThat(isMock(object.injected)).isTrue();
+    assertThat(isMock(object.autowired)).isTrue();
+    assertThat(isMock(object.resource)).isTrue();
+    assertThat(isMock(object.notInjected)).isFalse();
+    assertThat(isMock(object.injectedProvider)).isTrue();
+    assertThat(isMock(object.jakartaInjected)).isTrue();
   }
 
   @Test
@@ -57,18 +50,19 @@ public class MockInjectorTest {
 
     Object mockedValueOfPrivateField = privateField.get(object);
 
-    Assertions.assertThat(MockUtil.isMock(mockedValueOfPrivateField)).isTrue();
+    assertThat(isMock(mockedValueOfPrivateField)).isTrue();
   }
 
   @Test
   public void injectMocks_with_Class_parameter_injects_mocks_into_annotated_fields() {
     MyClass object = MockInjector.injectMocks(MyClass.class);
 
-    Assertions.assertThat(MockUtil.isMock(object.injected)).isTrue();
-    Assertions.assertThat(MockUtil.isMock(object.autowired)).isTrue();
-    Assertions.assertThat(MockUtil.isMock(object.resource)).isTrue();
-    Assertions.assertThat(MockUtil.isMock(object.notInjected)).isFalse();
-    Assertions.assertThat(MockUtil.isMock(object.injectedProvider)).isTrue();
+    assertThat(isMock(object.injected)).isTrue();
+    assertThat(isMock(object.autowired)).isTrue();
+    assertThat(isMock(object.resource)).isTrue();
+    assertThat(isMock(object.notInjected)).isFalse();
+    assertThat(isMock(object.injectedProvider)).isTrue();
+    assertThat(isMock(object.jakartaInjected)).isTrue();
   }
 
   @Test
@@ -77,26 +71,26 @@ public class MockInjectorTest {
 
     MockInjector.injectMocks(object);
 
-    Assertions.assertThat(MockUtil.isMock(object.setterInjectedField)).isTrue();
-    Assertions.assertThat(MockUtil.isMock(object.setter1InjectedField)).isTrue();
-    Assertions.assertThat(MockUtil.isMock(object.setter2InjectedField)).isTrue();
-    Assertions.assertThat(MockUtil.isMock(object.setterWithoutInject)).isFalse();
+    assertThat(isMock(object.setterInjectedField)).isTrue();
+    assertThat(isMock(object.setter1InjectedField)).isTrue();
+    assertThat(isMock(object.setter2InjectedField)).isTrue();
+    assertThat(isMock(object.setterWithoutInject)).isFalse();
   }
 
   @Test
   public void injectMocks_with_Class_can_handle_Constructor_Injection() {
     ConstructorInjectionClass object = MockInjector.injectMocks(ConstructorInjectionClass.class);
 
-    Assertions.assertThat(MockUtil.isMock(object.toBeInjected1)).isTrue();
-    Assertions.assertThat(MockUtil.isMock(object.toBeInjected2)).isTrue();
+    assertThat(isMock(object.toBeInjected1)).isTrue();
+    assertThat(isMock(object.toBeInjected2)).isTrue();
   }
 
   @Test
   public void injectMocks_with_Class_can_handle_Constructor_Injection_without_annotation() {
     ConstructorInjectionClassWithoutAnnotation object = MockInjector.injectMocks(ConstructorInjectionClassWithoutAnnotation.class);
 
-    Assertions.assertThat(MockUtil.isMock(object.toBeInjected1)).isTrue();
-    Assertions.assertThat(MockUtil.isMock(object.toBeInjected2)).isTrue();
+    assertThat(isMock(object.toBeInjected1)).isTrue();
+    assertThat(isMock(object.toBeInjected2)).isTrue();
   }
 
 }
