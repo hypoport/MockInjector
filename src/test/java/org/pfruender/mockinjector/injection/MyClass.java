@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.hypoport.mockito.injection;
+package org.pfruender.mockinjector.injection;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
@@ -26,6 +26,9 @@ public class MyClass {
 
   @Inject
   Object autowired;
+
+  @jakarta.inject.Inject
+  Object jakartaInjected;
 
   @Resource(name = "namedResource")
   Object resource;

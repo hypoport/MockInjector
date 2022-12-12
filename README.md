@@ -1,95 +1,211 @@
-MockInjector
-============
+# MockInjector
 Use a single statement to populate your object under test with (Mockito-)mocks
 
-What's new in Version 2.0?
---------------------------
-No special support for injection of providers anymore. Providers will be mocked like all other classes.
+## What's new in Version 3.0?
 
-How do I use it?
-================
-1. Annotate your dependencies (you already did that, right?)
-2. call injectMocks(classUnderTest)
-3. configure your mocks if necessary
+* No annotation needed on constructor, if there's just one constructor in the class that gets the dependencies injected.
+* support for jakarta out of the box
 
-Runs out of the box with javax, spring and guice annotations. Initializing all injected dependencies of a service with
-mocks is as simple as:
+
+## How do I use it?
+
+### maven
+
+```xml
+    <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>#your-favorite-version#</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>io.github.joerg-pfruender</groupId>
+        <artifactId>mockito-mockinjector</artifactId>
+        <version>3.0</version>
+        <scope>test</scope>
+    </dependency>
+```
+
+### gradle
+
+```groovy
+    dependencies {
+      testImplementation 'org.mockito:mockito-core:#your-favorite-version#'
+      testImplementation 'io.github.joerg-pfruender:mockito-mockinjector:3.0'
+    }
+    
+    configurations.all {
+      resolutionStrategy.force 'org.mockito:mockito-core:#your-favorite-version#'
+    }
+```
+
+### Java
+
+**Best used with package scope fields!**
+
+Runs out of the box with javax, jakarta, spring and guice annotations.
+ 
+Initializing all injected dependencies of a service with mocks is as simple as:
 
       public void setUp() {
         serviceUnderTest = injectMocks(Service.class);
       ...
 
-For an more complete example see `example/src/test/java/org/hypoport/mockito/example/SampleOrchestratingServiceUnitTest.java`
+For an more complete example see `example/src/test/java/org/pfruender/mockinjector/example/SampleOrchestratingServiceUnitTest.java`
 
-You can configure your own annotations using MockInjectorConfigurator.setInjectAnnotations() before the first call to
-injectMocks().
+You can configure your own annotations using `MockInjectorConfigurator.setInjectAnnotations()` before the first call to
+`injectMocks()`.
 
-You can find a more detailed introduction on https://tech.europace.de/use-mockinjector-and-package-protected-scope-for-dependencies-to-reduce-boilerplate-code/
 
-Limitations
------------
-Since you do not create your mocks manually you need some way to access them afterwards if necessary. Our preferred way is to have
-test and implementation classes in the same package and make your fields package local.
+### Additional help
 
+You do not need to code the mock injection manually, but you can use code templates, when working with Intellij IDEA:
+
+#### JUnit 5 template
+
+```
+        #parse("File Header.java")
+        #if (${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
+        
+        #if ($NAME.endsWith("Test"))
+        import org.junit.jupiter.api.BeforeEach;
+        import org.junit.jupiter.api.Test;
+        import static org.pfruender.mockinjector.MockInjector.injectMocks;
+        #end
+        
+        #parse("Type Header.java")
+        class ${NAME} {
+        
+        #if ($NAME.endsWith("Test"))
+        
+          $NAME.replace("Test", "") $NAME.substring(0, 1).toLowerCase()$NAME.replace("Test", "").substring(1);
+        
+          @BeforeEach
+          void setUp() throws Exception {
+            $NAME.substring(0, 1).toLowerCase()$NAME.replace("Test", "").substring(1) = injectMocks($NAME.replace("Test", "") .class);
+          }
+        
+        #end
+        }
+
+
+```
+
+#### TestNG template
+
+```
+        #parse("File Header.java")
+        #if (${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
+        
+        #if ($NAME.endsWith("Test"))
+        import org.testng.annotations.BeforeMethod;
+        import org.testng.annotations.Test;
+        
+        import static org.pfruender.mockinjector.MockInjector.injectMocks;
+        #end
+        
+        #parse("Type Header.java")
+        public class ${NAME} {
+        
+        #if ($NAME.endsWith("Test"))
+        
+          $NAME.replace("Test", "") $NAME.substring(0, 1).toLowerCase()$NAME.replace("Test", "").substring(1);
+        
+          @BeforeMethod
+          public void setUp() throws Exception {
+            $NAME.substring(0, 1).toLowerCase()$NAME.replace("Test", "").substring(1) = injectMocks($NAME.replace("Test", "") .class);
+          }
+        
+        #end
+        }
+```
+
+## Why?
+
+We have been bored to write so much boilerplate code for mocking dependencies in our unit tests. That’s why we have written MockInjector to automatically inject all mocks into our class under test.
+
+Think of this class:
+
+```java
+    @AllArgsConstructor
+    class ImplementationClass {
+      Dependency1 dependency1;
+      Dependency2 dependency2;
+    
+      void doSomething() {
+        dependency1.doSomething();
+        dependency2.doAnything();
+      }
+    }
+```
+
+The traditional way of mocking dependency1 and dependency2 with Mockito is:
+
+```java
+    class ImplementationClassTest {
+      ImplementationClass objectUnderTest;
+      Dependency1 dependency1;
+      Dependency2 dependency2;
+    
+      @BeforeEach 
+      void setUp() {
+        dependency1 = mock(Dependency1.class);
+        dependency2 = mock(Dependency2.class);
+        objectUnderTest = new ImplementationClass(dependency1, dependency2);
+      }
+    }
+```
+
+You can also do this using annotations:
+
+```java
+    class ImplementationClassTest {
+      @InjectMocks ImplementationClass objectUnderTest;
+      
+      @Mock Dependency1 dependency1;
+      
+      @Mock Dependency2 dependency2;
+    
+      @BeforeEach 
+      void setUp() {
+        initMocks(this);
+      }
+    }
+```
+
+But that solution is not really much shorter.
+
+Here comes this library:
+
+`org.pfruender.mockinjector.MockInjector.injectMocks()` will find *all* annotated dependencies and injects mocks for them.
+
+There are no dependency variables in the test class, which saves us two lines of code for each dependency.
+
+But how do you stub and verify the interactions with the mocks? Just use package protected scope for your dependencies:
+
+```java
+
+    @Test
+    public void doSomething_calls_dependencies() {
+      // when
+      objectUnderTest.doSomething();
+      // then
+      verify(objectUnderTest.dependency1).doSomething();
+      verify(objectUnderTest.dependency2).doAnything();
+    }
+
+```
+
+Additional advantages: 
+* If you refactor the field names in the implementation, you do not need to rename the fields in the tests accordingly.
+* with file templates you do not need to code any mocking setup manually.
+
+
+## Limitations
 If the class of injected instance is not mockable (e.g. a final class) null or nothing at all is injected, depending on the
 type of injection (parameter vs. field injection).
 
 
-Release
-=======
+## fork
 
-We do not want to release a new version of MockInjector every time when Mockito releases a new version.
-Therefor we have decided to declare an open-ended version range for our mockito dependency
-and we try to use only public api code of Mockito, that will hopefully not break.
-
-If you use MockInjector, please do *not* rely on the transitive dependency on mockito that it brings.
-Declare your own mockito dependency:
-
-```xml
-<dependency>
-    <groupId>org.mockito</groupId>
-    <artifactId>mockito-core</artifactId>
-    <version>#your-favorite-version#</version>
-    <scope>test</scope>
-</dependency>
-<dependency>
-    <groupId>org.hypoport</groupId>
-    <artifactId>mockito-mockinjector</artifactId>
-    <version>2.0</version>
-    <scope>test</scope>
-</dependency>
-```
-Why?
-----
-The open-ended version range of MockInjector will be resolved to the latest available version of mockito.
-If you do not fix the version, every time mockito releases a new version, you have a chance that your build breaks, although you have never changed anything.
-If you want to have stable builds, fix the version.
-
-Gradle
-------
-Gradle resolves the version to the latest available although you have declared your own version.
-This will result in an instable build, too.
-You should declare a resolution strategy:
-```
-dependencies {
-  testCompile 'org.mockito:mockito-core:#your-favorite-version#'
-  testCompile 'org.hypoport:mockito-mockinjector:2.0'
-}
-
-configurations.all {
-  resolutionStrategy.force 'org.mockito:mockito-core:#your-favorite-version#'
-}
-```
-
-Provider and migration from version 1.1
----------------------------------------
-Auto configuration of provider injection is not supported anymore because it was complicated, rarely used and had some strange behaviour.
-If you need to mock a provider, please configure it manually:
-
-
-      public void setUp() {
-        serviceUnderTest = injectMocks(Service.class);
-        given(serviceUnderTest.myProvider.get()).willReturn(providerResult);
-      ...
-
-When moving from mockInjector:1.1 to version 2.0 you will have to do that for every provider. 
+This project is a fork of [https://github.com/hypoport/MockInjector](https://github.com/hypoport/MockInjector).
